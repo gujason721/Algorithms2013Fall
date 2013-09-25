@@ -1,0 +1,12 @@
+
+1.Insertion sorting time: 1677 us
+
+2.Merge sorting time: 169 us
+
+3.Quick sorting time: 137 us
+
+4.Heap sorting time: 159 us
+
+
+Amount of Number:1000
+
