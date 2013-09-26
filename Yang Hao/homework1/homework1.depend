@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1380084871 source:c:\users\howard_yeung\documents\for_cpp\homework1\main.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<iomanip>
+	<time.h>
+	<limits.h>
+	<stdlib.h>
+
+1379475789 source:c:\users\howard_yeung\documents\for_cpp\homework1\test_1.c
+	<ctype.h>
+	<stdio.h>
+
