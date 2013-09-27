@@ -51,7 +51,7 @@ int main()
 
     start = clock();
 // four kinds of sorting
-    insertion_sort(A, sze-1);
+    insertion_sort(A, sze);
     //mrg_sort(A,0, sze-1);
     //heapsort(A, heapsize);
     //quicksort(A, 0, sze-1);
@@ -78,7 +78,7 @@ void insertion_sort(int A[], int n){
     int key;
     int i, j;
 
-    for(j=2; j!=n; j++){
+    for(j=1; j!=n; j++){
     key = A[j];
     i = j-1;
 
