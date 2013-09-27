@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1380200439 source:c:\users\howard_yeung\documents\for_cpp\howard_assigment1\main.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<iomanip>
+	<time.h>
+	<limits.h>
+	<stdlib.h>
+
