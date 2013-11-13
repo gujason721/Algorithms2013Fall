@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
+
 #define bool int
 #define RED 0
 #define BLACK 1

@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<time.h>
 
+
 int g_level = 1;
 
 typedef struct _node {
