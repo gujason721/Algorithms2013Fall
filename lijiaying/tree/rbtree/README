@@ -1,0 +1,38 @@
+/* red black tree:
+ * input as several integer numbers, not including 0, 
+ * which means the end of the pragram.
+ * An valid input can be as following:
+ * 	2
+ * 	4
+ * 	6
+ * 	8
+ * 	56
+ * 	23
+ * 	1
+ * 	6
+ * 	0
+ * The output is the red black tree in command line, 
+ *
+	Tree Starts Building.
+	Tree Built.
+	-------------------TREE---------------------
+	-->94B-->26B-->12R
+    	 |     |-->46R
+    	 |-->409B-->172R
+	-------------END OF PROGRAM-----------------
+
+ *
+ * The alphebate following the number is the color property of the node
+ * Root is 94, and its left child lies on its right right
+ * 		its left child lies on its downside, with an arrow point to it
+ * 		IN this case it is 409
+ *
+ * 		The right expression is like followed:
+ * 		      94B
+ * 		    /     \
+ * 		   26B     409B
+ * 		  /  \     /
+ * 		 12R  46R 172R
+ * 	End!
+ *
+ *
