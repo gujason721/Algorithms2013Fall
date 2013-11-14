@@ -1,0 +1,11 @@
+The project implements four sort algorithms:
+Heap sort;
+Insert sort;
+Merge sort;
+Quick sort.
+
+The arrays to be sorted are generated randomly each time. Also, you can set the array length and maximum number of the array to evaluate their performance.  
+
+The run time of each algorithms are recorded in nanoseconds.
+
+
