@@ -1,0 +1,225 @@
+package BTree;
+
+import java.util.ArrayList;
+
+public class BTree {
+	BNode root;
+	int t;
+	int size;
+	
+	public BTree(int t){
+		this.t = t;
+		root = allocateNode();
+		root.leaf = true;
+		root.n = 0;
+		size = 0;
+	}
+	
+	public ArrayList<Integer> inOrderTraversal(){
+		ArrayList<Integer> A = new ArrayList<Integer>();
+		inOrderTraversal(A, root);
+		return A;
+	}
+	
+	public void inOrderTraversal(ArrayList<Integer> A, BNode x){
+		int i;
+		for (i = 0; i < x.n; i++){
+			if (!x.leaf) inOrderTraversal(A, x.c[i]);
+			A.add(x.key[i]);
+		}
+		if (!x.leaf) inOrderTraversal(A, x.c[i]);
+	}
+	
+	public void insert(int k){
+		BNode r = root;
+		if (r.n == 2*t - 1){
+			BNode s = allocateNode();
+			root = s;
+			s.leaf = false;
+			s.n = 0;
+			s.c[0] = r;
+			splitChild(s,0);
+			insertNonFull(s,k);
+		} else {
+			insertNonFull(r,k);
+		}
+		size++;
+	}
+	
+	public void splitChild(BNode x, int i){
+		BNode z = allocateNode();
+		BNode y = x.c[i];
+		z.leaf = y.leaf;
+		z.n = t-1;
+		for (int j=0; j <= t-2; j++)
+			z.key[j]=y.key[j+t];
+		if (!y.leaf)
+			for (int j = 0; j <= t-1; j++)
+				z.c[j] = y.c[j+t];
+		y.n = t-1;
+		for (int j = x.n; j >= i; j--) 
+			x.c[j+1] = x.c[j];
+		x.c[i+1] = z;
+		for (int j = x.n - 1; j >= i; j--) // since i is correctly indexed when passed into the function, we go right down to i as in the pseudocode
+			x.key[j+1]=x.key[j];
+		x.key[i] = y.key[t-1];
+		x.n++;
+	}
+	
+	public BNode allocateNode(){
+		return new BNode(this);
+	}
+	
+	public BNode search(int k){
+		return search(root,k);
+	}
+	
+	public BNode search(BNode x, int k){
+		int i = 0;
+		while (i<x.n && k > x.key[i]) 
+			i++;
+		if (i < x.n && k == x.key[i]) 
+			return x; // pseudocode in Algorithms 3rd ed. says return (x,i)
+		else if (x.leaf)
+			return null;
+		return search(x.c[i],k);
+	}
+	
+	public void insertNonFull(BNode x, int k){
+		int i = x.n - 1;
+		if (x.leaf){
+			while (i >= 0 && k < x.key[i]) {
+				x.key[i+1]=x.key[i];
+				i--;
+			}
+			x.key[i+1] = k;
+			x.n = x.n + 1;
+		} else {
+			while (i >= 0 && k < x.key[i]) 
+				i--;
+			i++;
+			if (x.c[i].n == t*2-1){
+				splitChild(x,i);
+				if (k > x.key[i])
+					i++;
+			}
+			insertNonFull(x.c[i],k);
+		}
+	}
+
+	/*public void delete(int k){
+		BNode x = search(k);
+		if (x != null){
+			delete(x);
+			size--;
+		}
+	}*/
+	
+	// delete the largest key in the subtree rooted at y
+	private int deleteMax(BNode y){
+		if (y.leaf) {
+			int k = y.key[y.n - 1];
+			y.deleteKey(y.n - 1);
+			return k;
+		} else {
+			return deleteMax (y.c[y.n]);
+		}
+	}
+	
+	// delete the smallest key in the subtree rooted at y
+		private int deleteMin(BNode y){
+			if (y.leaf) {
+				int k = y.key[0];
+				y.deleteKey(0);
+				return k;
+			} else {
+				return deleteMin (y.c[0]);
+			}
+		}
+	
+	public BNode merge (BNode l, int k, BNode r){
+		BNode m = allocateNode();
+		
+		m.n = l.n + 1 + r.n;
+		int i = 0;
+		int j;
+		
+		// copy from l to m
+		for (j = 0; j < l.n; j++) {
+			m.c[i] = l.c[j];
+			m.key[i++] = l.key[j];
+		}
+		m.c[i] = l.c[j];
+		
+		// insert k
+		m.key[i++] = k;
+		
+		// copy from r to m
+		for (j = 0; j < r.n; j++) {
+			m.c[i] = r.c[j];
+			m.key[i++] = r.key[j];
+		}
+		m.c[i] = r.c[j];
+		
+		return m;
+	}
+	
+	public void delete (int k){
+		delete (k, root);
+	}
+		
+	public void delete (int k, BNode x){
+		int kIdx = x.findKey(k);
+		// cases 1, 2 if the key k is in node x
+		if (kIdx != -1){
+			if (x.leaf) { // case 1: x is a leaf; delete k from x
+				x.deleteKey(kIdx);
+			} else { // case 2: x is an internal node
+				BNode y = x.c[kIdx];
+				if (y == null) {
+					System.out.println("null pointer exception");
+				}
+				if (y.n >= t){// case 2a: the child y that precedes k in node x has at least t keys
+					int kPredecessor = deleteMax(y);
+					x.key[kIdx] = kPredecessor;
+				} else { // case 2b,c: y has fewer than t keys
+					BNode z = x.c[kIdx+1];
+					if (z.n >= t) { // case 2b: If z has at least t keys
+						int kSuccessor = deleteMin(z);
+						x.key[kIdx] = kSuccessor;
+					} else { // case 2c: If z has fewer than t keys
+						// merge k and all of z into y so that x looses both k and the pointer to z and y now contains 2t-1 keys
+						y = merge(y,x.key[kIdx],z);
+						x.deleteKey(kIdx);
+					}
+				}
+			}
+		} else { // case 3: x does not contain k
+			int idxOfSubTreeContK = x.findSubTree(k);
+			BNode subTreeContK = x.c[idxOfSubTreeContK];
+			if (subTreeContK == null){
+				System.out.println("Null Pointer Exception");
+			}
+			if (subTreeContK.n == t-1) { // case 3a,b
+				BNode lSibling = (idxOfSubTreeContK > 0) ? x.c[idxOfSubTreeContK - 1] : null;
+				BNode rSibling = (idxOfSubTreeContK < x.n) ? x.c[idxOfSubTreeContK + 1] : null;
+				if (lSibling != null && lSibling.n >= t) { // case 3a.1 - left sibling has at least t keys
+					// give a key to subTreeContK
+				} else if (rSibling != null && rSibling.n >= t){ // case 3a.2 - right sibling has at least t keys
+				    // give a key to subTreeContK	
+				} else { // case 3b: neither the left nor the right siblings have t keys
+					// merge subTreeContK with its left or right sibling, 
+					// moving the key that sat between them in x down into the merged node
+					if (rSibling != null){
+						subTreeContK = merge(subTreeContK,x.key[idxOfSubTreeContK],rSibling);
+						x.deleteKey(idxOfSubTreeContK);
+					} else if (lSibling != null) {
+						subTreeContK = merge(lSibling,x.key[idxOfSubTreeContK - 1],subTreeContK);
+						x.deleteKey(idxOfSubTreeContK - 1);
+					}
+				}
+			}
+			delete(k,subTreeContK);
+		}
+	}
+}

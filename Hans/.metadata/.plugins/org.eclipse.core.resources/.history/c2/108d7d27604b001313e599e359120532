@@ -1,0 +1,61 @@
+package redblack;
+
+import java.util.ArrayList;
+
+public class RedBlackTreeTest {
+
+	public static void main(String[] args) {
+		RBTree T = new RBTree();
+		
+		// Test Insert
+		//   Generate an array of random numbers
+		/*java.util.Random rand = new java.util.Random();
+		int [] A = new int [5];
+		int testRange = 5;
+		for (int i = 0; i < A.length; i++) {
+			int nextRandom = rand.nextInt() % testRange;
+			A[i] = nextRandom;
+		}*/
+		int [] A = {4, -3, 0, 2, 0};
+		print(A,"A");
+		
+		//   Insert the entire array into the tree
+		for (int i : A)	T.insert(new RBNode(i));
+		//   In-order-traverse the resulting tree
+		ArrayList<Integer> iot = T.inOrderTraversal();
+		print(iot,"In-order-traversal");
+		iot = T.inOrderTraversalRecursive();
+		print(iot,"In-order-traversal, recursive");
+		System.out.println("Size: " + T.size);
+		
+	}
+
+	/**
+	 * Prints the contents of an array of integers, separating elements by spaces
+	 * 
+	 * @param array The array to print
+	 * @param title A title to print at the beginning of the line of output
+	 */
+	public static void print(int[] array, String title){
+		System.out.print(title + ": ");
+		for (int i : array) {
+			System.out.print(i + " ");
+		}
+		System.out.println();
+	}
+	
+	/**
+	 * Prints the contents of an array of integers, separating elements by spaces
+	 * 
+	 * @param array The array to print
+	 * @param title A title to print at the beginning of the line of output
+	 */
+	public static void print(ArrayList<Integer> array, String title){
+		System.out.print(title + ": ");
+		for (Integer i : array) {
+			System.out.print(i + " ");
+		}
+		System.out.println();
+	}
+	
+}

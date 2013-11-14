@@ -1,0 +1,16 @@
+package BTree;
+
+import java.util.ArrayList;
+
+public class BNode {
+	int n;
+	boolean leaf;
+	BNode [] c;
+	int [] key;
+	
+	public BNode (BTree T) {
+		// TODO: make sure the size of these arrays is correct
+		c = new BNode [2*T.t + 1];
+		key = new int [2*T.t + 1];
+	}
+}

@@ -1,0 +1,13 @@
+package BTree;
+
+import java.util.ArrayList;
+
+public class BNode {
+	int n;
+	boolean leaf;
+	ArrayList<BNode> C;
+	
+	public BNode () {
+		C = new ArrayList<BNode>();
+	}
+}

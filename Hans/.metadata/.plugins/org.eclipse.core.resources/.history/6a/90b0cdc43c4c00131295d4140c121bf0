@@ -1,0 +1,28 @@
+package BTree;
+
+public class BNode {
+	int n;
+	boolean leaf;
+	BNode [] c;
+	int [] key;
+	
+	public BNode (BTree T) {
+		c = new BNode [2*T.t];
+		key = new int [2*T.t - 1];
+	}
+	
+	// returns the index of k in keys[] or -1 if not found
+	public int findKey(int k){
+		// TODO: replace this with a binary search
+		for (int i = 0; i < n; i++) 
+			if (key[i] == k) return i;
+		return -1;
+	}
+	
+	public int findSubTree(int k){
+		// TODO: replace this with a binary search
+		for (int i = 0; i < n; i++) 
+			if (key[i] > k) return i;
+		return n;
+	}
+}

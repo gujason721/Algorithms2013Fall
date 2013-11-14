@@ -1,0 +1,21 @@
+package redblack;
+
+public class RedBlackTreeTest {
+
+	public static void main(String[] args) {
+		RBTree T = new RBTree();
+		
+		// Test Insert
+		//   Generate an array of random numbers
+		java.util.Random rand = new java.util.Random();
+		int [] A = new int [100];
+		int testRange = 5;
+		for (int i = 0; i < A.length; i++) {
+			int nextRandom = rand.nextInt() % testRange;
+			A[i] = nextRandom;
+		}
+		//   Insert the entire array into the tree
+		for (int i : A)	T.insert(new RBNode(i));
+	}
+
+}

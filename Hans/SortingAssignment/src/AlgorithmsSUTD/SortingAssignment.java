@@ -19,6 +19,34 @@ enum SortingAlgorithm {INSERTION,HEAP,MERGE,QUICK};
 public class SortingAssignment {
 
 	public static void main(String[] args) {
+		
+		int aLength = 20;
+		int bLength = 10;
+		int testRange = 5;
+		int [] A = new int[aLength + bLength];
+		int [] B = new int[bLength];
+
+		java.util.Random rand = new java.util.Random();
+		for (int i = 0; i < A.length; i++) {
+			int nextRandom = rand.nextInt() % testRange;
+			A[i] = nextRandom;
+		}
+		for (int i = 0; i < B.length; i++) {
+			int nextRandom = rand.nextInt() % testRange;
+			B[i] = nextRandom;
+		}
+		
+		mergeSort(B);
+		mergeSort(A,0,aLength - 1);
+		
+		print(A, "A");
+		print(B, "B");
+		
+		merge(A,B);
+		
+		print(A, "A and B merged");
+		
+		/*
 		boolean loadFromFile = true;
 		boolean outputToFile = true;
 	    boolean outputToConsole = true;
@@ -98,6 +126,28 @@ public class SortingAssignment {
 			System.out.println("     Merge: " + mergeTime);
 			System.out.println("      Heap: " + heapTime);
 			System.out.println("     Quick: " + quickTime);
+		}
+		*/
+	}
+	
+	// Merges B into A. 
+	// We assume that A and B are sorted from min to max.
+	// The last B.length elements of A will be treated as garbage and over-written
+	// The first A.length - B.length elements of B will be treated as input and must be in sorted order
+	public static void merge(int [] A, int [] B){
+		int aReadPosition = (A.length - 1) - B.length;
+		int aWritePosition = (A.length - 1);
+		int bReadPosition = B.length - 1;
+		
+		// Starting from the end of the meaningful parts of the two lists, merge similar to the mergeSort algorithm
+		while (aWritePosition >= 0){
+			if(aReadPosition < 0){ // if all of A is already merged
+				A[aWritePosition--] = B[bReadPosition--];
+			} else if (bReadPosition < 0 ){ // if all of A is already merged
+				A[aWritePosition--] = A[aReadPosition--]; 
+			} else if (A[aReadPosition] > B[bReadPosition]) {
+				A[aWritePosition--] = A[aReadPosition--];
+			} else A[aWritePosition--] = B[bReadPosition--];
 		}
 	}
 

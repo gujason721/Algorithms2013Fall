@@ -1,0 +1,32 @@
+package BTree;
+
+public class BTree {
+	BNode root;
+	int t;
+	
+	public BTree(int t){
+		this.t = t;
+	}
+	
+	public void insert(int k){
+		BNode r = root;
+		if (r.n == 2*t - 1){
+			BNode s = allocateNode();
+			root = s;
+			s.leaf = false;
+			s.n = 0;
+			s.c[1] = r;
+		} else {
+			insertNonFull(r,k);
+		}
+	}
+	
+	public BNode allocateNode(){
+		// TODO: write this
+		return new BNode();
+	}
+	
+	public void insertNonFull(BNode r, int k){
+		// TODO write this
+	}
+}
