@@ -1,5 +1,154 @@
 package skiplist;
 
-public class SList {
+import java.util.ArrayList;
 
+public class SList {
+	SLNode head;
+	SLNode nil;
+	int size;
+	ArrayList<Integer> levelCounts;
+	int maxLevel;
+	java.util.Random rand; 
+	
+	public SList(){
+		maxLevel = 0;
+		nil = new SLNode(Integer.MAX_VALUE,maxLevel);
+		head = nil;
+		head.next[0] = nil;
+		levelCounts = new ArrayList<Integer>();
+		levelCounts.add(0);
+	}
+	
+	public ArrayList<Integer> toArrayList(){
+		ArrayList<Integer> al = new ArrayList<Integer>();
+		SLNode n = head;
+		while(n.next[0] != nil) {
+			al.add(n.next[0].key);
+			n = n.next[0];
+		}
+		return al;
+	}
+	
+	// ensures an appropriate distribution of nodes at each level
+	int getLevelForNextInsert(){
+		float level = 0;
+		for (int i : levelCounts){
+			if (i < (float)size/Math.pow(2.0, level)){
+				return (int)Math.floor(level);
+			}
+		}
+		return 0; 
+	}
+	
+	public void insert(int key){
+		int level = getLevelForNextInsert();
+		SLNode newNode = new SLNode(key,level);
+		incrementLevelCounts(level);
+		// insert to list and update pointers on preceeding nodes
+		SLNode p = head;
+		for (int l = level; l >= 0; l--){
+			p = preceedingNodeAtLevel(key,l,p);
+			SLNode nextL = p.next[l];
+			p.next[l] = newNode;
+			newNode.next[l] = nextL;
+		}
+		size++;
+	}
+	
+	public SLNode preceedingNodeFromLevel(int key, int level,SLNode start) {
+		int searchLevel = level;
+		SLNode searchNode = start;
+		SLNode preceedingNode = start;
+		while (searchLevel >= level) {
+			while (searchNode.key < key) {
+				preceedingNode = searchNode;
+				searchNode = searchNode.next[searchLevel];
+			}
+			searchNode = preceedingNode;
+			searchLevel--;
+		}
+		return searchNode;
+	}
+	
+	public SLNode preceedingNodeAtLevel(int key, int level,SLNode start) {
+		SLNode searchNode = start;
+		SLNode preceedingNode = start;
+		while (searchNode.key < key) {
+			preceedingNode = searchNode;
+			searchNode = searchNode.next[level];
+		}
+		return preceedingNode;
+	}
+	
+	public int getMaxLevel(){
+		int max = 0;
+		int l = 0;
+		for (int i : levelCounts){
+			if (i > 1) max = l;
+			l++;
+		}
+		return max;
+	}
+	
+	public void updateMaxLevel(){
+		int newMaxLevel = getMaxLevel();
+		if (newMaxLevel > maxLevel) {
+			// add empty spaces to levelCounts
+			int levelCountDeficiency = newMaxLevel - levelCounts.size();
+			for (int i = 1; i <= levelCountDeficiency; i++)
+				levelCounts.add(0);
+			
+			// add more pointers to the head  (*note: the level of the head is not counted in the levelCounts)
+			SLNode oldHead = head;
+			head = new SLNode(head.key,newMaxLevel);
+			int i;
+			for (i = 0; i < oldHead.next.length; i++)
+				head.next[i] = oldHead.next[i];
+			while (i <= newMaxLevel)
+				head.next[i++] = nil;
+		} else if (newMaxLevel < maxLevel) {
+			// remove pointers from the head  (*note: the level of the head is not counted in the levelCounts)
+			SLNode oldHead = head;
+			head = new SLNode(head.key,newMaxLevel);
+			int i;
+			for (i = 0; i < newMaxLevel; i++)
+				head.next[i] = oldHead.next[i];
+		}
+		maxLevel = newMaxLevel;
+	}
+	
+	public void incrementLevelCounts(int level){
+		levelCounts.set(level,levelCounts.get(level) + 1);
+		updateMaxLevel();
+	}
+	
+	public SLNode search(int k){
+		SLNode p = preceedingNodeFromLevel(k,maxLevel,head); // get the preceeding node (we're just reusing the preceedingNode function to avoid writing a new search function)
+		if (p.next[0].key == k) return p.next[0];
+		else return null;
+	}
+	
+	public void decrementLevelCounts(int level){
+		levelCounts.set(level, levelCounts.get(level) - 1);
+		updateMaxLevel();
+	}
+	
+	public void delete(int k){
+		// search, stopping if not found
+		SLNode d = search(k);
+		if (d == null) return;
+		else {
+			int level = d.next.length - 1;
+			// update levelCounts
+			decrementLevelCounts(level);
+		
+			// update pointers
+			SLNode p = head;
+			for (int l = level; l > 0; l--){
+				p = preceedingNodeAtLevel(k,l,p);
+				p.next[l] = d.next[l];
+			}
+			size--;
+		}
+	}
 }
