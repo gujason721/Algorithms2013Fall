@@ -37,7 +37,6 @@ node* sl_search(skiplist* S, int x)
 int get_level()
 {
 	int k = 1;
-	srand((int)time(NULL)); 
 	while (rand()%2) {
 		k++;
 		if (k > g_level) {
@@ -205,6 +204,7 @@ void sl_print(skiplist* S)
 
 int main()
 {
+	srand((int)time(NULL)); 
 	skiplist* S = (skiplist*)malloc(sizeof(skiplist));
 	node nodes[2] = {
 		{-1, &nodes[1], NULL},

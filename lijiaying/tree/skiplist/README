@@ -19,3 +19,13 @@
 		BUT from other files, like redirect from other data files, does not work well. (e.g. $> ./sl < case.t > out.t)
 		Don't know the reasons for now.
 */
+
+/* Problem Solved:
+ * 	The problem occurs because everytime I run get_level()
+ * 	I initialized a seed by time, which has the precisty to 
+ * 	second.
+ * 	When I read the input from keyboard, it is OK;
+ * 	But if I read the input from File, it is too fast, and
+ * 	time seed remains the same, so it can get the same value by rand()
+ * 	As a result, the number on several next levels are similar...
+ * 	/
