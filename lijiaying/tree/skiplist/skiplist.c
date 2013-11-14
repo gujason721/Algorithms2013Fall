@@ -2,7 +2,6 @@
 #include<stdlib.h>
 #include<time.h>
 
-
 int g_level = 1;
 
 typedef struct _node {
@@ -38,7 +37,7 @@ node* sl_search(skiplist* S, int x)
 int get_level()
 {
 	int k = 1;
-	srand((int)time(0)); 
+	srand((int)time(NULL)); 
 	while (rand()%2) {
 		k++;
 		if (k > g_level) {
@@ -113,7 +112,7 @@ int sl_delete(skiplist* S, int k)
 		temp = temp->down;
 	}
 	node* pre_p = temp;
-	
+
 	temp = S->top;
 	while (1) {
 		while (temp->right->key < k) {
@@ -159,20 +158,47 @@ int sl_delete(skiplist* S, int k)
 
 void sl_print(skiplist* S)
 {
+	if (S->top == NULL) {
+		return;
+	}
+	node* Btm = S->top;
+	while (Btm->down != NULL) {
+		Btm = Btm->down;
+	}
 	node* s = S->top;
 	int i = g_level;
+	int j = 0;
+	printf("GLOBAL level: %d\n", g_level);
 	while (i > 0) {
+		node* pB = Btm;
 		node* p = s;
-		printf("Level %d:\t", i);
+		//		printf("<L%2d>\t", i);
 		while (p != NULL) {
-			printf("%2d->", p->key);
-			p = p->right;
+			if (p->key == pB->key) {
+				if (j == 0) {
+					printf(">%2d ", p->key);
+				} else {
+					if (i != 1) {
+						printf ("  | ");
+					}
+				}
+				p = p->right;
+			} else {
+				if (j == 0) {
+					printf ("----");
+				} else {
+					printf ("    ");
+				}
+			}
+			pB = pB->right;
 		}
 		printf("\n");
-		s = s->down;
-		i--;
+		if (j == 1) {
+			s = s->down;
+			i--;
+		}
+		j = (j + 1) % 2;
 	}
-	printf("\n");
 }
 
 
@@ -185,13 +211,16 @@ int main()
 		{1000000, NULL, NULL}
 	};
 	S->top = &nodes[0];
-	
+
 	int i;
 	printf("Start...\n");
 	scanf("%d", &i);
 	while (i != -1) {
-		sl_insert(S, i);
-		sl_print(S);
+		if (i == -2) {
+			sl_print(S);
+		} else {
+			sl_insert(S, i);
+		}
 		scanf("%d", &i);
 	}
 	delete(S);
