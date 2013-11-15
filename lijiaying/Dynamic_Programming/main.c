@@ -36,7 +36,7 @@ int Calc(int m, int n)
 }
 
 
-char stack[50];
+char stack[MAX + 1];
 int idx = 0;
 void stack_push(char c)
 {
