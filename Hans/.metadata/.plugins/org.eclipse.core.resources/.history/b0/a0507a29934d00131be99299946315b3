@@ -25,8 +25,7 @@ public class SkipListTest {
 		for (int i : A){
 			L.insert(i);
 			ArrayList<Integer> al = L.toArrayList();
-			System.out.println("The s-list after inserting " + i);
-			L.print();
+			print(al, "The s-list after inserting " + i);
 		}
 
 		
@@ -41,8 +40,7 @@ public class SkipListTest {
 				// }
 				L.delete(i);
 				ArrayList<Integer> al = L.toArrayList();
-				System.out.println("The s-list after deleting " + i);
-				L.print();
+				print(al, "The s-list after deleting " + i);
 			}
 /*
 		// Put back all the negative numbers and delete all the positive numbers

@@ -12,7 +12,6 @@ public class SList {
 	
 	public SList(){
 		maxLevel = 0;
-		size = 0;
 		nil = new SLNode(Integer.MAX_VALUE,maxLevel);
 		head = nil;
 		head.next[0] = nil;
@@ -49,21 +48,14 @@ public class SList {
 	}
 	
 	// ensures an appropriate distribution of nodes at each level
-	private int getLevelForNextInsert(){
-		int level;
-		int nodesAtLevel;
-		for (level = 0; targetNodesAtLevel(level) > 0;level++){
-			if(level < levelCounts.size()) nodesAtLevel = levelCounts.get(level);
-			else nodesAtLevel = 0;
-			if (nodesAtLevel < targetNodesAtLevel(level)) return (int)level;
+	int getLevelForNextInsert(){
+		float level = 0;
+		for (int i : levelCounts){
+			if (i < (float)size/Math.pow(2.0, level)){
+				return (int)Math.floor(level);
+			}
 		}
 		return 0; 
-	}
-	
-	// gives the number of nodes that should be at "level" to keep the 
-	// numbers in correct proportions
-	private int targetNodesAtLevel(int level){
-		return (int)Math.round((float)size/Math.pow(2.0, level+1));
 	}
 	
 	public void insert(int key){
@@ -110,7 +102,7 @@ public class SList {
 		int max = 0;
 		int l = 0;
 		for (int i : levelCounts){
-			if (i > 0) max = l;
+			if (i > 1) max = l;
 			l++;
 		}
 		return max;
@@ -144,7 +136,6 @@ public class SList {
 	}
 	
 	public void incrementLevelCounts(int level){
-		while (levelCounts.size() < (level + 1)) levelCounts.add(0);
 		levelCounts.set(level,levelCounts.get(level) + 1);
 		updateMaxLevel();
 	}

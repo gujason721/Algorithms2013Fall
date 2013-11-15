@@ -144,7 +144,6 @@ public class SList {
 	}
 	
 	public void incrementLevelCounts(int level){
-		while (levelCounts.size() < (level + 1)) levelCounts.add(0);
 		levelCounts.set(level,levelCounts.get(level) + 1);
 		updateMaxLevel();
 	}
