@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename method &apos;skiplist.SList.preceedingNodeAtLevel(...)&apos; to &apos;lastSmallerNodeAtLevel&apos;&#x0A;- Original project: &apos;SkipList&apos;&#x0A;- Original element: &apos;skiplist.SList.preceedingNodeAtLevel(...)&apos;&#x0A;- Renamed element: &apos;skiplist.SList.lastSmallerNodeAtLevel(...)&apos;&#x0A;- Update references to refactored element" delegate="false" deprecate="false" description="Rename method &apos;preceedingNodeAtLevel&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.method" input="/src&lt;skiplist{SList.java[SList~preceedingNodeAtLevel~I~I~QSLNode;" name="lastSmallerNodeAtLevel" references="true" stamp="1384506039445" version="1.0"/>
+</session>

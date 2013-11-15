@@ -9,6 +9,7 @@ public class SkipListTest {
 
 		// Test Insert
 		// Generate an array of random numbers
+		
 		java.util.Random rand = new java.util.Random();
 		int[] A = new int[15];
 		int testRange = 5;
@@ -16,8 +17,6 @@ public class SkipListTest {
 			int nextRandom = rand.nextInt() % testRange;
 			A[i] = nextRandom;
 		}
-		// int [] A = {2, 1, -2, -2, 0, 0, -1, -2, 0, 0, 1, -2, 2, 0};
-		// int [] A = {0,2,-2,-1}; // short array that causes an error
 		print(A, "A");
 
 		// Insert the entire array into the list
@@ -36,29 +35,32 @@ public class SkipListTest {
 		System.out.println("\nDeleting all negative keys from the list");
 		for (int i : A)
 			if (i < 0) {
-				// if (i == -1) {
-				// System.out.println("The next line will cause an error.");
-				// }
 				L.delete(i);
 				ArrayList<Integer> al = L.toArrayList();
 				System.out.println("The s-list after deleting " + i);
 				L.print();
 			}
-/*
+		
+		// try to delete an element that is not in the list
+		L.delete(3);
+		L.delete(3);
+		System.out.print("\nL after attempting to delete 3, which is not in the list: \n");
+		L.print();
+		
+		
 		// Put back all the negative numbers and delete all the positive numbers
 		// instead
 		for (int i : A)
 			if (i < 0)
-				T.insert(i);
+				L.insert(i);
 		System.out
 				.println("\nNow, replace negatives and delete all positive keys.");
 		for (int i : A)
 			if (i >= 0) {
-				T.delete(i);
-				System.out.print("T after deleting " + i + ": ");
-				T.printTree();
+				L.delete(i);
+				System.out.print("L after deleting " + i + ": \n");
+				L.print();
 			}
-			*/
 	}
 
 	/**

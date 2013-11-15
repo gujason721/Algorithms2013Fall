@@ -3,8 +3,8 @@ package skiplist;
 import java.util.ArrayList;
 
 public class SList {
-	SLNode head;
-	SLNode nil;
+	SLNode head; // head will not store any data
+	SLNode nil; // nil will be used to mark the end of the list.  It will not store any data.
 	int size;
 	ArrayList<Integer> levelCounts;
 	int maxLevel;
@@ -14,7 +14,7 @@ public class SList {
 		maxLevel = 0;
 		size = 0;
 		nil = new SLNode(Integer.MAX_VALUE,maxLevel);
-		head = nil;
+		head = new SLNode(Integer.MIN_VALUE,maxLevel);
 		head.next[0] = nil;
 		levelCounts = new ArrayList<Integer>();
 		levelCounts.add(0);
@@ -22,7 +22,7 @@ public class SList {
 	
 	public ArrayList<Integer> toArrayList(){
 		ArrayList<Integer> al = new ArrayList<Integer>();
-		SLNode n = head;
+		SLNode n = head.next[0];
 		while(n.next[0] != nil) {
 			al.add(n.next[0].key);
 			n = n.next[0];
@@ -36,7 +36,7 @@ public class SList {
 		SLNode n = head;
 		while(n.next[0] != nil) {
 			String nextKey = String.valueOf(n.next[0].key);
-			String nextLevel = String.valueOf(n.next.length);
+			String nextLevel = String.valueOf(n.next[0].level());
 			// make sure the two strings are the same length;
 			while (nextLevel.length() < nextKey.length()) nextLevel = " ".concat(nextLevel);
 			while (nextKey.length() < nextLevel.length()) nextKey = " ".concat(nextKey);
@@ -72,34 +72,22 @@ public class SList {
 		incrementLevelCounts(level);
 		// insert to list and update pointers on preceeding nodes
 		SLNode p = head;
-		for (int l = level; l >= 0; l--){
-			p = preceedingNodeAtLevel(key,l,p);
-			SLNode nextL = p.next[l];
-			p.next[l] = newNode;
-			newNode.next[l] = nextL;
+		for (int l = maxLevel; l >= 0; l--){
+			p = lastSmallerNodeAtLevel(key,l,p);
+			if (l <= level) {
+				SLNode nextL = p.next[l];
+				p.next[l] = newNode;
+				newNode.next[l] = nextL;
+			}
 		}
 		size++;
 	}
 	
-	public SLNode preceedingNodeFromLevel(int key, int level,SLNode start) {
-		int searchLevel = level;
+	// find the last node < key
+	public SLNode lastSmallerNodeAtLevel(int key, int level, SLNode start) {
 		SLNode searchNode = start;
 		SLNode preceedingNode = start;
-		while (searchLevel >= level) {
-			while (searchNode.key < key) {
-				preceedingNode = searchNode;
-				searchNode = searchNode.next[searchLevel];
-			}
-			searchNode = preceedingNode;
-			searchLevel--;
-		}
-		return searchNode;
-	}
-	
-	public SLNode preceedingNodeAtLevel(int key, int level,SLNode start) {
-		SLNode searchNode = start;
-		SLNode preceedingNode = start;
-		while (searchNode.key < key) {
+		while (searchNode.key < key && searchNode != nil) {
 			preceedingNode = searchNode;
 			searchNode = searchNode.next[level];
 		}
@@ -108,22 +96,14 @@ public class SList {
 	
 	public int getMaxLevel(){
 		int max = 0;
-		int l = 0;
-		for (int i : levelCounts){
-			if (i > 0) max = l;
-			l++;
-		}
+		for (int l = 0; l < levelCounts.size();l++) if (levelCounts.get(l) > 0) max = l;
 		return max;
 	}
 	
 	public void updateMaxLevel(){
 		int newMaxLevel = getMaxLevel();
+		
 		if (newMaxLevel > maxLevel) {
-			// add empty spaces to levelCounts
-			int levelCountDeficiency = newMaxLevel - levelCounts.size();
-			for (int i = 1; i <= levelCountDeficiency; i++)
-				levelCounts.add(0);
-			
 			// add more pointers to the head  (*note: the level of the head is not counted in the levelCounts)
 			SLNode oldHead = head;
 			head = new SLNode(head.key,newMaxLevel);
@@ -137,7 +117,7 @@ public class SList {
 			SLNode oldHead = head;
 			head = new SLNode(head.key,newMaxLevel);
 			int i;
-			for (i = 0; i < newMaxLevel; i++)
+			for (i = 0; i <= newMaxLevel; i++)
 				head.next[i] = oldHead.next[i];
 		}
 		maxLevel = newMaxLevel;
@@ -150,9 +130,14 @@ public class SList {
 	}
 	
 	public SLNode search(int k){
-		SLNode p = preceedingNodeFromLevel(k,maxLevel,head); // get the preceeding node (we're just reusing the preceedingNode function to avoid writing a new search function)
-		if (p.next[0].key == k) return p.next[0];
-		else return null;
+		int searchLevel;
+		SLNode searchNode = head; 
+		for(searchLevel = maxLevel; searchLevel >= 0; searchLevel--){
+			searchNode = lastSmallerNodeAtLevel(k, searchLevel, searchNode);
+		}
+		if (searchNode.next[0].key == k) 
+			return searchNode.next[0];
+		return null;
 	}
 	
 	public void decrementLevelCounts(int level){
@@ -161,21 +146,47 @@ public class SList {
 	}
 	
 	public void delete(int k){
+		SLNode [] predecessor = new SLNode [maxLevel+1];
+		int searchLevel;
+		// first, find the node to delete
+		SLNode searchNode = head; 
+		for(searchLevel = maxLevel; searchLevel >= 0; searchLevel--){
+			predecessor[searchLevel] = searchNode = lastSmallerNodeAtLevel(k, searchLevel, searchNode);
+		}
+		
+		if (searchNode.next[0].key == k) { // if we found it... now delete it.
+			SLNode d = searchNode.next[0];
+			
+			// update pointers
+			for(int i = 0; i <= d.level(); i++){
+				predecessor[i].next[i] = d.next[i];
+			}
+			
+			// update levelCounts
+			decrementLevelCounts(d.level());
+			
+			size--;
+		}
+	}
+	
+	/*
+	public void delete(int k){
 		// search, stopping if not found
 		SLNode d = search(k);
 		if (d == null) return;
 		else {
-			int level = d.next.length - 1;
+			int level = d.level();
 			// update levelCounts
 			decrementLevelCounts(level);
 		
 			// update pointers
 			SLNode p = head;
-			for (int l = level; l > 0; l--){
-				p = preceedingNodeAtLevel(k,l,p);
+			for (int l = level; l >= 0; l--){
+				p = lastSmallerNodeAtLevel(k,l,p);
 				p.next[l] = d.next[l];
 			}
 			size--;
 		}
 	}
+	*/
 }
