@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1384517562 source:c:\users\howard_yeung\documents\for_cpp\rb_tree_howard\main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+
