@@ -1,0 +1,13 @@
+\\psf\Home\Documents\Visual Studio 2013\Projects\AudioFileCompare\WindowsFormsApplication2\bin\Debug\WindowsFormsApplication2.exe.config
+\\psf\Home\Documents\Visual Studio 2013\Projects\AudioFileCompare\WindowsFormsApplication2\obj\Debug\WindowsFormsApplication2.exe
+\\psf\Home\Documents\Visual Studio 2013\Projects\AudioFileCompare\WindowsFormsApplication2\obj\Debug\WindowsFormsApplication2.pdb
+\\psf\Home\Documents\Visual Studio 2013\Projects\AudioFileCompare\WindowsFormsApplication2\bin\Debug\WindowsFormsApplication2.exe.manifest
+\\psf\Home\Documents\Visual Studio 2013\Projects\AudioFileCompare\WindowsFormsApplication2\bin\Debug\WindowsFormsApplication2.application
+\\psf\Home\Documents\Visual Studio 2013\Projects\AudioFileCompare\WindowsFormsApplication2\bin\Debug\WindowsFormsApplication2.exe
+\\psf\Home\Documents\Visual Studio 2013\Projects\AudioFileCompare\WindowsFormsApplication2\bin\Debug\WindowsFormsApplication2.pdb
+\\psf\Home\Documents\Visual Studio 2013\Projects\AudioFileCompare\WindowsFormsApplication2\obj\Debug\AudioFileCompareSUTD.csprojResolveAssemblyReference.cache
+\\psf\Home\Documents\Visual Studio 2013\Projects\AudioFileCompare\WindowsFormsApplication2\obj\Debug\WindowsFormsApplication2.Form1.resources
+\\psf\Home\Documents\Visual Studio 2013\Projects\AudioFileCompare\WindowsFormsApplication2\obj\Debug\WindowsFormsApplication2.Properties.Resources.resources
+\\psf\Home\Documents\Visual Studio 2013\Projects\AudioFileCompare\WindowsFormsApplication2\obj\Debug\AudioFileCompareSUTD.csproj.GenerateResource.Cache
+\\psf\Home\Documents\Visual Studio 2013\Projects\AudioFileCompare\WindowsFormsApplication2\obj\Debug\WindowsFormsApplication2.exe.manifest
+\\psf\Home\Documents\Visual Studio 2013\Projects\AudioFileCompare\WindowsFormsApplication2\obj\Debug\WindowsFormsApplication2.application

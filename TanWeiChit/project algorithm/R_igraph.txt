@@ -1,0 +1,34 @@
+to build large graph
+1. install R language
+2. install igraph package
+
+to start, in console type:
+
+utm@ubuntu:~$R --vanilla
+>library(igraph)
+>g <- read.graph("sna.lgl", format="lgl", directed=FALSE)
+>summary(g)  //to check graph
+>no.clusters(g)   //find #clusters in G
+>table(clusters(g)$csize)
+>max(degree(g, mode="all"))   //find max deg of a vertex
+>d <- degree(g, mode="all")   //plot deg distribution
+>dd <- degree.distribution(g, mode="all", cumulative=TRUE)
+>png("degreedistribution.png")
+>plot(dd, log="xy", xlab="degree", ylab="cumulative frequency", main="Degree Distribution")
+>dev.off()
+>mean <- mean(deg)     //find average degree og G
+>head(sort(deg, decr = T))
+>page <- page.rank.old(g)
+>head(sort(pagerank, decr=T))
+>p <- plot(page.rank.old(g))
+>save(p, file='~/R/filename.pdf')
+>save(g, file = "sna.Rdata.gz", compress=TRUE)
+>load("sna.Rdata.gz")
+>sp <- get.shortest.paths(g, source, dest)       //get shortest path between s and t
+>dist <- graph.bfs(g, root = 1, unreachable=FALSE, dist=TRUE)$dist    //get hop num of BFS of G
+>unique(dist)    
+>length(which(dist == 1))    //get num of vertices with one-hop
+>as.numeric(V(g)["vname"]    //convert vertex name into vertex index
+>V(g)[vindex]                //convert vertex index into vertex name
+
+
