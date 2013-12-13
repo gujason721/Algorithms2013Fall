@@ -21,8 +21,11 @@ public class BTreeTest {
 		print(A, "A");
 
 		// Insert the entire array into the tree
-		for (int i : A)
+		for (int i : A){
 			T.insert(i);
+			System.out.print("T after inserting " + i + ": ");
+			T.printTree();
+		}
 		// In-order-traverse the resulting tree
 		//ArrayList<Integer> iot = T.inOrderTraversal();
 		//print(iot, "In-order-traversal");
