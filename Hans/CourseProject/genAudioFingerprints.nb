@@ -1,0 +1,266 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      8920,        257]
+NotebookOptionsPosition[      8361,        235]
+NotebookOutlinePosition[      8716,        251]
+CellTagsIndexPosition[      8673,        248]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"specGram", "[", 
+     RowBox[{"q_", ",", "n_", ",", "over_", ",", "m_", ",", "per_"}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"qPart", ",", "sizQr", ",", "sizQc", ",", "ran", ",", "fftQ"}],
+        "}"}], ",", 
+      RowBox[{
+       RowBox[{"window", "=", 
+        RowBox[{"N", "[", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{"1", "-", 
+            RowBox[{"(", 
+             RowBox[{"0.54", "+", 
+              RowBox[{"0.46", " ", 
+               RowBox[{"Cos", "[", 
+                RowBox[{"2", " ", "Pi", " ", 
+                 RowBox[{"i", "/", "n"}]}], "]"}]}]}], ")"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", "n"}], "}"}]}], "]"}], "]"}]}], ";", 
+       RowBox[{"ran", "=", 
+        RowBox[{"Range", "[", 
+         RowBox[{
+          RowBox[{"m", "[", 
+           RowBox[{"[", "1", "]"}], "]"}], ",", 
+          RowBox[{"m", "[", 
+           RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"qPart", "=", 
+        RowBox[{"Partition", "[", 
+         RowBox[{
+          RowBox[{"q", "[", 
+           RowBox[{"[", "ran", "]"}], "]"}], ",", "n", ",", 
+          RowBox[{"Round", "[", 
+           RowBox[{"n", "/", "over"}], "]"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"sizQr", ",", "sizQc"}], "}"}], "=", 
+        RowBox[{"Dimensions", "[", "qPart", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"fftQ", "=", 
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{"Abs", "[", 
+           RowBox[{"Fourier", "[", 
+            RowBox[{"window", " ", 
+             RowBox[{"qPart", "[", 
+              RowBox[{"[", "i", "]"}], "]"}]}], "]"}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "1", ",", "sizQr"}], "}"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Reverse", "[", 
+        RowBox[{"Transpose", "[", 
+         RowBox[{"Take", "[", 
+          RowBox[{"fftQ", ",", 
+           RowBox[{"{", 
+            RowBox[{"1", ",", "sizQr"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"1", ",", 
+             RowBox[{"Round", "[", 
+              RowBox[{"per", " ", "sizQc"}], "]"}]}], "}"}]}], "]"}], "]"}], 
+        "]"}]}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"RealPositiveSpectrogram", "[", 
+     RowBox[{"x_", ",", "bins_", ",", " ", "zoom_"}], "]"}], ":=", 
+    RowBox[{"specGram", "[", 
+     RowBox[{"x", ",", "bins", ",", "4", ",", 
+      RowBox[{"{", 
+       RowBox[{"1", ",", 
+        RowBox[{"Length", "[", "x", "]"}]}], "}"}], ",", "zoom"}], "]"}]}], 
+   ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"genFingerprints", "[", "filename_", "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"zoom", " ", "=", " ", "0.02"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"input", " ", "=", " ", 
+       RowBox[{"Import", "[", "filename", "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"inputMono", " ", "=", " ", 
+       RowBox[{
+        RowBox[{"input", "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", "1", ",", "1"}], "]"}], "]"}], "+", 
+        RowBox[{"input", "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", "1", ",", "2"}], "]"}], "]"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"sampleRate", " ", "=", " ", 
+       RowBox[{"input", "[", 
+        RowBox[{"[", 
+         RowBox[{"1", ",", "2"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      
+      RowBox[{"startSample", "=", "1"}], ";", 
+      RowBox[{"length", " ", "=", " ", 
+       RowBox[{
+        RowBox[{"Length", "[", "inputMono", "]"}], " ", "-", " ", "1000"}]}], 
+      ";", "\[IndentingNewLine]", 
+      RowBox[{"endSample", " ", "=", " ", 
+       RowBox[{"startSample", " ", "+", " ", "length"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"rps", " ", "=", " ", 
+       RowBox[{"RealPositiveSpectrogram", "[", 
+        RowBox[{
+         RowBox[{"inputMono", "[", 
+          RowBox[{"[", 
+           RowBox[{"startSample", ";;", "endSample"}], "]"}], "]"}], ",", 
+         RowBox[{"2", "^", "15"}], ",", "zoom"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"maxRanges", " ", "=", " ", 
+       RowBox[{"Transpose", "[", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"MaxDetect", "[", 
+           RowBox[{"#", ",", "0.5"}], "]"}], "&"}], " ", "/@", " ", 
+         RowBox[{"Transpose", "[", "rps", "]"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Export", "[", 
+       RowBox[{
+        RowBox[{
+        "\"\</Users/hans/Desktop/audio fingerprint/prints/\>\"", " ", "<>", 
+         RowBox[{"FileBaseName", "[", "filename", "]"}], "<>", 
+         "\"\<.maxima\>\""}], ",", "maxRanges", ",", " ", "\"\<csv\>\""}], 
+       "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Export", "[", 
+       RowBox[{
+        RowBox[{
+        "\"\</Users/hans/Desktop/audio fingerprint/prints/\>\"", " ", "<>", 
+         RowBox[{"FileBaseName", "[", "filename", "]"}], "<>", 
+         "\"\<.spectrogram\>\""}], ",", "rps", ",", " ", "\"\<csv\>\""}], 
+       "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.5955446131782207`*^9, 3.595544899544899*^9}, {
+   3.595545041146256*^9, 3.595545131459427*^9}, {3.595545174893477*^9, 
+   3.595545184580905*^9}, {3.595545279929904*^9, 3.5955453694887657`*^9}, {
+   3.595545423051812*^9, 3.59554556895216*^9}, {3.595545835228311*^9, 
+   3.595545860095079*^9}, {3.595545967561633*^9, 3.595546005521728*^9}, {
+   3.595546044477996*^9, 3.5955460616853933`*^9}, 3.595546092479982*^9, {
+   3.5955475076352158`*^9, 3.595547520839058*^9}, {3.5955489461062937`*^9, 
+   3.595548958369987*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+  "genFingerprints", "[", 
+   "\"\</Users/hans/Desktop/audio fingerprint/John Mayer - Badge And Gun - \
+search.wav\>\"", "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.5955460106582413`*^9, 3.595546011448905*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+  "genFingerprints", "[", 
+   "\"\</Users/hans/Desktop/audio fingerprint/mic-recorded-search.wav\>\"", 
+   "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.595648178028838*^9, 3.595648186259576*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+  "genFingerprints", "[", 
+   "\"\</Users/hans/Desktop/audio fingerprint/John Mayer - Badge And \
+Gun.wav\>\"", "]"}], ";"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+  "genFingerprints", "[", 
+   "\"\</Users/hans/Desktop/audio fingerprint/John Mayer - Call Me The \
+Breeze.wav\>\"", "]"}], ";"}]], "Input",
+ CellChangeTimes->{3.5955501422114277`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+  "genFingerprints", "[", 
+   "\"\</Users/hans/Desktop/audio fingerprint/bob marley - corner stone.wav\>\
+\"", "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.595570560534083*^9, 3.595570581215958*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+  "genFingerprints", "[", 
+   "\"\</Users/hans/Desktop/audio \
+fingerprint/LindaChung_Fly_Me_to_the_Moon.wav\>\"", "]"}], ";"}]], "Input",
+ CellChangeTimes->{3.595570598482452*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+  "genFingerprints", "[", 
+   "\"\</Users/hans/Desktop/audio fingerprint/\:5b87\:591a\:7530\:30d2\:30ab\
+\:30eb_Fly_Me_to_the_Moon.wav\>\"", "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.595570617090261*^9, 3.595570619830966*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+  "genFingerprints", "[", 
+   "\"\</Users/hans/Desktop/audio fingerprint/singing-search.wav\>\"", "]"}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.595649708778646*^9, 3.595649711137694*^9}}]
+},
+WindowSize->{740, 752},
+WindowMargins->{{9, Automatic}, {Automatic, 32}},
+FrontEndVersion->"9.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (January 25, \
+2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 5969, 150, 454, "Input"],
+Cell[6529, 172, 247, 6, 63, "Input"],
+Cell[6779, 180, 231, 6, 46, "Input"],
+Cell[7013, 188, 170, 5, 46, "Input"],
+Cell[7186, 195, 219, 6, 46, "Input"],
+Cell[7408, 203, 235, 6, 46, "Input"],
+Cell[7646, 211, 215, 6, 46, "Input"],
+Cell[7864, 219, 265, 6, 57, "Input"],
+Cell[8132, 227, 225, 6, 28, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
