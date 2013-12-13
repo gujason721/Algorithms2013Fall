@@ -1,0 +1,10 @@
+The code is composed of two parts.
+
+The SVM part is a demo for sloving the problem of find maximum of an array. The main function is in Driver.java, you can simply execute it by run that java file. You'll get a approximative predicate by SVM which needs further furnishment, but it's ok, because the information we get is so near to what we want.
+
+The AST part is for adding print statements in souce code. It's a java plugin project, so can simply run it by clicking F11. After that, a new IDE interface comes out with one button "sample command". Click the sample for the demo test find maximum project, it will add print statements in the demo source code.
+
+If you have any questions running the code, please contact me at jingyi_wang@mymail.sutd.edu.sg
+
+Enjoy!
+

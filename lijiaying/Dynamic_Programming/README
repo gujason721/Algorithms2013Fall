@@ -1,0 +1,18 @@
+/* Dynamic Prgramming:
+ * Longest Common Subsequence
+ * input: two ascii strings within length of 100
+ * output: the longest length that match
+ * 		   all the subsequence that satisfied the LCS
+ *
+ * Debug parameter:
+ * 		-DEBUG_MATRIX
+ * 			this will output the table we calculated.
+ *
+ *
+ * Problem Solved:
+ * 		1. how to search for all the feasible path that matches
+ * 		2. how to output the path in order
+ * 		(I use a simple stack, not considering its exception
+ * 		because it will not cause any exception:
+ * 		a push followed by a pop, never overflow or underflow)
+ */
