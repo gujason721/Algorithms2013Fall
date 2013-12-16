@@ -1,0 +1,10 @@
+E:\Users\Tian\Documents\Visual Studio 2005\Projects\FinalExam\FinalExam\obj\Debug\ResolveAssemblyReference.cache
+E:\Users\Tian\Documents\Visual Studio 2005\Projects\FinalExam\FinalExam\bin\Debug\FinalExam.exe
+E:\Users\Tian\Documents\Visual Studio 2005\Projects\FinalExam\FinalExam\bin\Debug\FinalExam.pdb
+E:\Users\Tian\Documents\Visual Studio 2005\Projects\FinalExam\FinalExam\obj\Debug\FinalExam.exe
+E:\Users\Tian\Documents\Visual Studio 2005\Projects\FinalExam\FinalExam\obj\Debug\FinalExam.pdb
+C:\Users\Tian\Desktop\FinalExam\FinalExam\obj\Debug\FinalExam.exe
+C:\Users\Tian\Desktop\FinalExam\FinalExam\obj\Debug\FinalExam.pdb
+C:\Users\Tian\Desktop\FinalExam\FinalExam\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Tian\Desktop\FinalExam\FinalExam\bin\Debug\FinalExam.exe
+C:\Users\Tian\Desktop\FinalExam\FinalExam\bin\Debug\FinalExam.pdb
